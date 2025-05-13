@@ -223,6 +223,26 @@
   const filtrarProductos = (categoria) => {
     renderProductos(categoria);
   };
+  <!-- Parte de la COMPARACION DE PRECIOS -->
+<!-- Se debe agregar un botón junto a cada producto que diga "Comparar Precio" y una sección donde se muestre la comparación -->.
+<button class="btn btn-info" onclick="compararPrecio('omega')">Comparar Precio</button>
+<div id="comparacionResultado"></div>
+  <!-- Aquí se encuentra la funcion para COMPARAR PRECIOS -->
+function compararPrecio(producto) {
+  fetch(`../Backend/s/comparar_precios.php?producto=${producto}`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.error) {
+        document.getElementById('comparacionResultado').innerText = data.error;
+      } else {
+        document.getElementById('comparacionResultado').innerHTML = `
+          <p><strong>${data.nombre}</strong><br>
+          Precio en otra plataforma: ${data.precio}<br>
+          Fuente: <a href="${data.fuente}" target="_blank">${data.fuente}</a></p>
+        `;
+      }
+    });
+}
 
   window.onload = () => renderProductos('todos');
 </script>
